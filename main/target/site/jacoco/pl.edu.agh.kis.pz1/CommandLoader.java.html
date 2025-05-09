@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CommandLoader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Modul glowny aplikacji - klasa Main z metoda main</a> &gt; <a href="index.source.html" class="el_package">pl.edu.agh.kis.pz1</a> &gt; <span class="el_source">CommandLoader.java</span></div><h1>CommandLoader.java</h1><pre class="source lang-java linenums">package pl.edu.agh.kis.pz1;
+
+
+import java.io.File;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.HashSet;
+import java.util.Set;
+
+<span class="fc" id="L10">public class CommandLoader&lt;T&gt; {</span>
+<span class="fc" id="L11">    private final Set&lt;Command&lt;T&gt;&gt; commands = new HashSet&lt;&gt;();</span>
+
+    public Set&lt;Command&lt;T&gt;&gt; loadCommands(String path){
+<span class="pc bpc" id="L14" title="1 of 2 branches missed.">        if(path.isEmpty()){</span>
+<span class="nc" id="L15">            path = System.getProperty(&quot;user.dir&quot;);</span>
+<span class="nc" id="L16">            System.out.println(&quot;Using user.dir (&quot;+path+&quot;)&quot;);</span>
+        }
+<span class="fc" id="L18">        try(URLClassLoader ucl = new URLClassLoader(new URL[] {new File(path).toURI().toURL()})){</span>
+<span class="fc" id="L19">            File dir = new File(path);</span>
+
+<span class="pc bpc" id="L21" title="2 of 4 branches missed.">            if(!dir.exists() || !dir.isDirectory()){</span>
+<span class="nc" id="L22">                System.out.println(&quot;Directory does not exist&quot;);</span>
+<span class="nc" id="L23">                return null;</span>
+            }
+
+<span class="pc bpc" id="L26" title="1 of 2 branches missed.">            if(dir.listFiles() == null){</span>
+<span class="nc" id="L27">                return null;</span>
+            }
+
+<span class="fc bfc" id="L30" title="All 2 branches covered.">            for(File f : dir.listFiles()){</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">                if(f.getName().endsWith(&quot;.class&quot;)){</span>
+<span class="fc" id="L32">                    String className = f.getName().replace(&quot;.class&quot;, &quot;&quot;);</span>
+<span class="fc" id="L33">                    Class&lt;?&gt; c = ucl.loadClass(className);</span>
+
+<span class="fc bfc" id="L35" title="All 2 branches covered.">                    if(Command.class.isAssignableFrom(c)){</span>
+<span class="fc" id="L36">                        Command&lt;T&gt; command = (Command&lt;T&gt;) c.getDeclaredConstructor().newInstance();</span>
+
+<span class="fc" id="L38">                        commands.add(command);</span>
+<span class="fc" id="L39">                        System.out.println(&quot;Loaded command: &quot; + command.getInvokeName());</span>
+                    }
+                }
+            }
+<span class="fc" id="L43">            return commands;</span>
+<span class="nc" id="L44">        }</span>
+<span class="nc" id="L45">        catch(Exception e){</span>
+<span class="nc" id="L46">            e.printStackTrace();</span>
+<span class="nc" id="L47">            return null;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

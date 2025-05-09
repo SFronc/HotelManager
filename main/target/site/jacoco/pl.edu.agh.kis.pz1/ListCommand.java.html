@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ListCommand.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Modul glowny aplikacji - klasa Main z metoda main</a> &gt; <a href="index.source.html" class="el_package">pl.edu.agh.kis.pz1</a> &gt; <span class="el_source">ListCommand.java</span></div><h1>ListCommand.java</h1><pre class="source lang-java linenums">package pl.edu.agh.kis.pz1;
+
+/**
+ * Komenda wypisująca wszystkie pokoje z ich lokatorami
+ */
+public class ListCommand extends Command&lt;Hotel&gt;{
+    public ListCommand() {
+<span class="fc" id="L8">        super(&quot;list&quot;);</span>
+<span class="fc" id="L9">    }</span>
+
+    /**
+     * Komenda wypisująca dane
+     * @return Powodzenie
+     */
+    @Override
+    public boolean execute(Hotel target){
+<span class="pc bpc" id="L17" title="1 of 2 branches missed.">        if(target.getRooms() == null) return false;</span>
+
+        Room room;
+<span class="fc bfc" id="L20" title="All 2 branches covered.">        for(String number : target.getRooms()){</span>
+<span class="fc" id="L21">            System.out.println(&quot;Room &quot; + number);</span>
+<span class="fc" id="L22">            room = target.getRoom(number);</span>
+<span class="fc bfc" id="L23" title="All 2 branches covered.">            if(room.isOccupied()) {</span>
+<span class="fc" id="L24">                System.out.println(&quot;Occupancy: &quot; + room.getOccupants().size() + &quot;/&quot; + room.getCapacity());</span>
+<span class="fc" id="L25">                System.out.print(&quot;Renter: &quot;);</span>
+<span class="fc" id="L26">                System.out.println(room.getOccupants().get(0));</span>
+
+<span class="pc bpc" id="L28" title="1 of 2 branches missed.">                if (room.getOccupants().size() &gt; 1) {</span>
+<span class="nc bnc" id="L29" title="All 2 branches missed.">                    for (int i = 1; i &lt; room.getOccupants().size(); i++) {</span>
+<span class="nc" id="L30">                        System.out.println(&quot;Occupant &quot; + i);</span>
+<span class="nc" id="L31">                        System.out.println(room.getOccupants().get(i));</span>
+                    }
+                }
+<span class="fc" id="L34">                System.out.print(&quot;Planned check-out date: &quot;);</span>
+<span class="fc" id="L35">                System.out.println(room.getReservationDate().plusDays(room.getDurationDays()));</span>
+            }
+            else{
+<span class="fc" id="L38">                System.out.println(&quot;Occupancy: 0/&quot; + room.getCapacity());</span>
+            }
+<span class="fc" id="L40">            System.out.println();</span>
+<span class="fc" id="L41">        }</span>
+
+<span class="fc" id="L43">        return true;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

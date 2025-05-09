@@ -1,0 +1,6 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+Modul na klasy uzytkowe,pl.edu.agh.kis.pz1.util,TextUtils,52,0,2,0,14,0,5,0,4,0
+Modul na klasy uzytkowe,pl.edu.agh.kis.pz1.util,MyMap.Data,50,20,9,1,7,7,7,4,2,4
+Modul na klasy uzytkowe,pl.edu.agh.kis.pz1.util,MyHashMap,24,199,9,15,6,45,9,10,0,7
+Modul na klasy uzytkowe,pl.edu.agh.kis.pz1.util,MyMap,8,130,2,18,3,30,2,14,0,6
+Modul na klasy uzytkowe,pl.edu.agh.kis.pz1.util,MyHashMap.Data,42,28,9,1,4,10,6,5,1,5

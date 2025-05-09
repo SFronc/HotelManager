@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TextUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Modul na klasy uzytkowe</a> &gt; <a href="index.source.html" class="el_package">pl.edu.agh.kis.pz1.util</a> &gt; <span class="el_source">TextUtils.java</span></div><h1>TextUtils.java</h1><pre class="source lang-java linenums">package pl.edu.agh.kis.pz1.util;
+
+import org.apache.commons.codec.digest.DigestUtils;
+
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.UUID;
+
+public class TextUtils {
+    private TextUtils() {}
+
+    public static String sha512Hash(String str) {
+<span class="nc" id="L14">        return DigestUtils.sha512Hex(str);</span>
+    }
+
+    public static String getMd5Hash(String input) {
+        try {
+<span class="nc" id="L19">            MessageDigest md = MessageDigest.getInstance(&quot;MD5&quot;);</span>
+<span class="nc" id="L20">            byte[] messageDigest = md.digest(input.getBytes());</span>
+
+            // Convert byte array into signum representation
+<span class="nc" id="L23">            BigInteger no = new BigInteger(1, messageDigest);</span>
+
+            // Convert message digest into hex value
+<span class="nc" id="L26">            String hashtext = no.toString(16);</span>
+<span class="nc bnc" id="L27" title="All 2 branches missed.">            while (hashtext.length() &lt; 32) {</span>
+<span class="nc" id="L28">                hashtext = &quot;0&quot; + hashtext;</span>
+            }
+<span class="nc" id="L30">            return hashtext;</span>
+        }
+
+        // For specifying wrong message digest algorithms
+<span class="nc" id="L34">        catch (NoSuchAlgorithmException e) {</span>
+<span class="nc" id="L35">            System.out.println(e.getMessage());</span>
+<span class="nc" id="L36">            System.exit(1);</span>
+        }
+<span class="nc" id="L38">        return null;</span>
+    }
+    public static String generateRandomHash() {
+<span class="nc" id="L41">        return UUID.randomUUID().toString();</span>
+    }
+
+    public static String generateHash(String str) {
+<span class="nc" id="L45">        return DigestUtils.sha512Hex(str);</span>
+    }
+
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

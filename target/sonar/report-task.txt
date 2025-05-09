@@ -1,0 +1,6 @@
+projectKey=pl.edu.agh.kis.pz1:multi-module
+serverUrl=http://localhost:9000
+serverVersion=9.9.7.96285
+dashboardUrl=http://localhost:9000/dashboard?id=pl.edu.agh.kis.pz1%3Amulti-module
+ceTaskId=AZNrH47YuhmnOiU13ict
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AZNrH47YuhmnOiU13ict

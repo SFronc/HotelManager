@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MyMap.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Modul na klasy uzytkowe</a> &gt; <a href="index.source.html" class="el_package">pl.edu.agh.kis.pz1.util</a> &gt; <span class="el_source">MyMap.java</span></div><h1>MyMap.java</h1><pre class="source lang-java linenums">package pl.edu.agh.kis.pz1.util;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+interface Map&lt;K, V&gt; {
+    /**
+     * Dodanie elementu do mapy pod podanym kluczem.
+     Jeśli podany klucz istnieje to metoda powinna podmienić wartość.
+     * @param key klucz (nie null)
+     * @param value wartość kryjącą się pod kluczem (nie null)
+     * @return true jeśli się uda dodać element, false jeśli nie
+     */
+    boolean put(K key, V value);
+    /**
+     * Usunięcie podanego klucza oraz wartości, która jest przechowywana pod tym
+     kluczem.
+     * @param key klucz do usunięcia
+     * @return true jeśli uda się usunać klucz, false w przeciwnym przypadku
+     */
+    boolean remove(K key);
+    /**
+     * Zwraca wartość pod podanym kluczem lub null jeśli nie ma podanego klucza.
+     * @param key klucz (nie ull)
+     * @return wartość pod kluczem lub null jeśli nie ma wartości dla podanego klucza
+     */
+    V get(K key);
+    /**
+     * Zwraca listę kluczy
+     * @return java.util.List lista kluczy
+     */
+    List&lt;K&gt; keys();
+    /**
+     * Sprawdza czy podany klucz istnieje w mapie.
+     * @param key wartość klucza do sprawdzenia.
+     * @return true jeśli klucz istnieje.
+     */
+    boolean contains(K key);
+}
+
+public class MyMap&lt;K,V&gt; implements Map&lt;K,V&gt;{
+    private List&lt;Data&lt;K,V&gt;&gt; list;
+
+
+    public static class Data&lt;K,V&gt;{
+        private K key;
+        private V value;
+
+<span class="fc" id="L50">        public Data(K key, V value){</span>
+<span class="fc" id="L51">            this.key = key;</span>
+<span class="fc" id="L52">            this.value = value;</span>
+<span class="fc" id="L53">        }</span>
+
+        public K getKey(){
+<span class="fc" id="L56">            return key;</span>
+        }
+
+        public V getValue(){
+<span class="fc" id="L60">            return value;</span>
+        }
+
+        public V setValue(V value){
+<span class="nc" id="L64">            V oldValue = this.value;</span>
+<span class="nc" id="L65">            this.value = value;</span>
+<span class="nc" id="L66">            return oldValue;</span>
+        }
+
+        public boolean equals(Object obj){
+<span class="pc bpc" id="L70" title="1 of 2 branches missed.">            if(this == obj) return true;</span>
+<span class="nc bnc" id="L71" title="All 4 branches missed.">            if(obj == null || obj.getClass() != getClass()) return false;</span>
+<span class="nc" id="L72">            Data&lt;K,V&gt; data = (Data&lt;K,V&gt;) obj;</span>
+<span class="nc bnc" id="L73" title="All 4 branches missed.">            return Objects.equals(key, data.key) &amp;&amp; Objects.equals(value, data.value);</span>
+        }
+
+        public int hashCode(){
+<span class="nc" id="L77">            return Objects.hash(key, value);</span>
+        }
+    }
+<span class="fc" id="L80">    public MyMap() {</span>
+<span class="fc" id="L81">        list = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L82">    }</span>
+
+    @Override
+    public boolean put(K key, V value){
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">        if(key == null) {</span>
+<span class="nc" id="L87">            return false;</span>
+        }
+
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        for(Data&lt;K,V&gt; data : list){</span>
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">            if(data.getKey().equals(key)){</span>
+<span class="nc" id="L92">                data.setValue(value);</span>
+<span class="nc" id="L93">                return true;</span>
+            }
+<span class="fc" id="L95">        }</span>
+
+<span class="fc" id="L97">        list.add(new Data&lt;&gt;(key, value));</span>
+<span class="fc" id="L98">        return true;</span>
+    }
+
+    @Override
+    public boolean remove(K key) {
+<span class="fc bfc" id="L103" title="All 2 branches covered.">        for(Data&lt;K,V&gt; data : list){</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">            if(data.getKey().equals(key)){</span>
+<span class="fc" id="L105">                list.remove(data);</span>
+<span class="fc" id="L106">                return true;</span>
+            }
+<span class="fc" id="L108">        }</span>
+
+<span class="fc" id="L110">        return false;</span>
+    }
+
+    @Override
+    public V get(K key) {
+<span class="fc bfc" id="L115" title="All 2 branches covered.">        for(Data&lt;K,V&gt; data : list){</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">            if(data.getKey().equals(key)){</span>
+<span class="fc" id="L117">                return data.getValue();</span>
+            }
+<span class="fc" id="L119">        }</span>
+
+<span class="fc" id="L121">        return null;</span>
+    }
+
+    @Override
+    public List&lt;K&gt; keys() {
+<span class="fc" id="L126">        List&lt;K&gt; keys = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">        for(Data&lt;K,V&gt; data : list){</span>
+<span class="fc" id="L128">            keys.add(data.getKey());</span>
+<span class="fc" id="L129">        }</span>
+
+<span class="fc" id="L131">        return keys;</span>
+    }
+
+    @Override
+    public boolean contains(K key) {
+<span class="fc bfc" id="L136" title="All 2 branches covered.">        for(Data&lt;K,V&gt; data : list){</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">            if(data.getKey().equals(key)){</span>
+<span class="fc" id="L138">                return true;</span>
+            }
+<span class="fc" id="L140">        }</span>
+<span class="fc" id="L141">        return false;</span>
+    }
+}
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

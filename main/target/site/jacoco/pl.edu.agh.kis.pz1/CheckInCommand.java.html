@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CheckInCommand.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Modul glowny aplikacji - klasa Main z metoda main</a> &gt; <a href="index.source.html" class="el_package">pl.edu.agh.kis.pz1</a> &gt; <span class="el_source">CheckInCommand.java</span></div><h1>CheckInCommand.java</h1><pre class="source lang-java linenums">package pl.edu.agh.kis.pz1;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.Scanner;
+
+/**
+ * Komenda sluzaca do rezerwacji pokoju w hitelu
+ *
+ * @author Seweryn Fronc
+ * @version 1.0
+ */
+public class CheckInCommand extends Command&lt;Hotel&gt; {
+    public CheckInCommand() {
+<span class="fc" id="L15">        super(&quot;checkin&quot;);</span>
+<span class="fc" id="L16">    }</span>
+
+    /**
+     * Interaktywna metoda rezerwujaca pokoj.
+     * Metoda kontroluje, czy pokoj istnieje oraz czy jest zajety.
+     * @return True w przypadku powodzenia, False w przeciwnym wypadku
+     */
+    @Override
+    public boolean execute(Hotel target) {
+<span class="fc" id="L25">        Scanner sc = new Scanner(System.in);</span>
+<span class="fc" id="L26">        System.out.print(&quot;Type room number (format: f.n where f - floor, n - room number): &quot;);</span>
+<span class="fc" id="L27">        String roomNumber = sc.nextLine();</span>
+
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        if(!target.getRooms().contains(roomNumber)){</span>
+<span class="fc" id="L30">            System.out.println(&quot;Room not found!&quot;);</span>
+<span class="fc" id="L31">            return false;</span>
+        }
+
+<span class="fc" id="L34">        Room room = target.getRoom(roomNumber);</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">        if(room.isOccupied()){</span>
+<span class="fc" id="L36">            System.out.println(&quot;Room is occupied!&quot;);</span>
+<span class="fc" id="L37">            return false;</span>
+        }
+
+<span class="fc" id="L40">        Person person = Person.createPerson(sc);</span>
+<span class="fc" id="L41">        room.addOccupant(person);</span>
+<span class="fc" id="L42">        room.setOccupied(true);</span>
+
+<span class="fc" id="L44">        target.addClient(person,room);</span>
+
+
+<span class="fc bfc" id="L47" title="All 2 branches covered.">        if(room.getCapacity() &gt; 1){</span>
+<span class="fc bfc" id="L48" title="All 2 branches covered.">            for(int i = 1; i &lt; room.getCapacity(); i++){</span>
+<span class="fc" id="L49">                System.out.println(&quot;The room has &quot; + (room.getCapacity() - i) +&quot; more seats. Would you like to add someone? (Y/N)&quot;);</span>
+<span class="fc" id="L50">                String answer = sc.nextLine().toLowerCase();</span>
+
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">                if (answer.equals(&quot;y&quot;)) {</span>
+<span class="fc" id="L53">                    person = Person.createPerson(sc);</span>
+<span class="fc" id="L54">                    room.addOccupant(person);</span>
+<span class="fc" id="L55">                    target.addClient(person,room);</span>
+                }
+
+<span class="nc bnc" id="L58" title="All 2 branches missed.">                else if (answer.equals(&quot;n&quot;)) {</span>
+<span class="nc" id="L59">                    break;</span>
+                }
+
+<span class="nc" id="L62">                else System.out.println(&quot;Wrong answer.&quot;);</span>
+            }
+        }
+
+<span class="fc" id="L66">        System.out.print(&quot;Type check in date (format: YYYY-MM-DD) or click enter to set current date: &quot;);</span>
+<span class="fc" id="L67">        String checkInDate = sc.nextLine();</span>
+
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">        while(!isValidDate(checkInDate)){</span>
+<span class="nc" id="L70">            System.out.print(&quot;\nWrong format. Try again: &quot;);</span>
+<span class="nc" id="L71">            checkInDate = sc.nextLine();</span>
+        }
+
+<span class="fc" id="L74">        System.out.print(&quot;\nEnter the length of stay (days): &quot;);</span>
+
+<span class="fc" id="L76">        String stay = sc.nextLine();</span>
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">        while(!isValidInteger(stay)){</span>
+<span class="nc" id="L78">            System.out.print(&quot;\nWrong number. Try again: &quot;);</span>
+<span class="nc" id="L79">            stay = sc.nextLine();</span>
+        }
+<span class="fc" id="L81">        int days = Integer.parseInt(stay);</span>
+
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">        if(checkInDate.isEmpty()){</span>
+<span class="nc" id="L84">            room.setCheckInDate(LocalDate.now(),days);</span>
+        }
+        else{
+<span class="fc" id="L87">            room.setCheckInDate(LocalDate.parse(checkInDate), days);</span>
+        }
+
+<span class="fc" id="L90">        System.out.print(&quot;Type additional info: &quot;);</span>
+<span class="fc" id="L91">        String info = sc.nextLine();</span>
+
+
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">        if(!info.isEmpty()){</span>
+<span class="fc" id="L95">            room.setInfo(info);</span>
+        }
+
+<span class="fc" id="L98">        System.out.println(&quot;Check in procedure successful!&quot;);</span>
+<span class="fc" id="L99">        return true;</span>
+    }
+
+    private static boolean isValidDate(String dateStr) {
+        try {
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">            if(dateStr.isEmpty()){</span>
+<span class="nc" id="L105">                return true;</span>
+            }
+<span class="fc" id="L107">            LocalDate.parse(dateStr);</span>
+<span class="fc" id="L108">            return true;</span>
+<span class="nc" id="L109">        } catch (DateTimeParseException e) {</span>
+<span class="nc" id="L110">            return false;</span>
+        }
+    }
+
+    private static boolean isValidInteger(String input) {
+        try {
+<span class="fc" id="L116">            int x = Integer.parseInt(input);</span>
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">            return x &gt; 0;</span>
+<span class="nc" id="L118">        } catch (NumberFormatException e) {</span>
+<span class="nc" id="L119">            return false;</span>
+        }
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

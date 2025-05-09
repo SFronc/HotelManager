@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PricesCommand.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Modul glowny aplikacji - klasa Main z metoda main</a> &gt; <a href="index.source.html" class="el_package">pl.edu.agh.kis.pz1</a> &gt; <span class="el_source">PricesCommand.java</span></div><h1>PricesCommand.java</h1><pre class="source lang-java linenums">package pl.edu.agh.kis.pz1;
+
+
+import java.util.List;
+
+/**
+ * Komenda wypisująca ceny pokoi
+ *
+ * @author Seweryn Fronc
+ * @version 1.0
+ */
+public class PricesCommand extends Command&lt;Hotel&gt; {
+    public PricesCommand() {
+<span class="fc" id="L14">        super(&quot;prices&quot;);</span>
+<span class="fc" id="L15">    }</span>
+
+    /**
+     * Metoda wykonująca komemndę
+     * @return Powodzenie
+     */
+    @Override
+    public boolean execute(Hotel target) {
+<span class="fc" id="L23">        List&lt;String&gt; rooms = target.getRooms();</span>
+<span class="pc bpc" id="L24" title="1 of 2 branches missed.">        if(rooms.isEmpty()){</span>
+<span class="nc" id="L25">            System.out.println(&quot;No rooms found&quot;);</span>
+<span class="nc" id="L26">            return false;</span>
+        }
+
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        for(String number : rooms) {</span>
+<span class="fc" id="L30">            System.out.println(&quot;Room number: &quot;+number);</span>
+<span class="fc" id="L31">            Room room = target.getRoom(number);</span>
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">            if(room == null){</span>
+<span class="nc" id="L33">                System.out.println(&quot;Room not found&quot;);</span>
+<span class="nc" id="L34">                return false;</span>
+            }
+<span class="fc" id="L36">            System.out.print(&quot;Price: &quot;);</span>
+<span class="fc" id="L37">            System.out.println(room.getPrice());</span>
+<span class="fc" id="L38">            System.out.println();</span>
+<span class="fc" id="L39">        }</span>
+
+<span class="fc" id="L41">        return true;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

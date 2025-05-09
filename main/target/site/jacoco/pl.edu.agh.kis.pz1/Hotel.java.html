@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Hotel.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Modul glowny aplikacji - klasa Main z metoda main</a> &gt; <a href="index.source.html" class="el_package">pl.edu.agh.kis.pz1</a> &gt; <span class="el_source">Hotel.java</span></div><h1>Hotel.java</h1><pre class="source lang-java linenums">package pl.edu.agh.kis.pz1;
+
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVRecord;
+import pl.edu.agh.kis.pz1.util.MyHashMap;
+
+import java.io.*;
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
+
+/**
+ * Klasa hotelu sluzaca do zarzadzania danym hotelem
+ *
+ * @author Seweryn Fronc
+ * @version 1.0
+ */
+public class Hotel {
+    private MyHashMap&lt;String, Room&gt; rooms;
+    private MyHashMap&lt;Person, Room&gt; clients;
+    private String hotelName;
+
+    /**
+     * Konstruktor tworzacy hotel w interaktywny sposob
+     * Uzytkownik proszony jest o podanie danych kolejno tworzonych pokojow
+     */
+<span class="fc" id="L30">    public Hotel() {</span>
+<span class="fc" id="L31">        System.out.println(&quot;Room creator&quot;);</span>
+<span class="fc" id="L32">        Scanner scanner = new Scanner(System.in);</span>
+<span class="fc" id="L33">        System.out.print(&quot;Enter hotel name: &quot;);</span>
+<span class="fc" id="L34">        this.hotelName = scanner.nextLine();</span>
+<span class="fc" id="L35">        rooms = new MyHashMap&lt;&gt;();</span>
+<span class="fc" id="L36">        System.out.println(&quot;\n1. Create a new room&quot;);</span>
+<span class="fc" id="L37">        System.out.println(&quot;2. Exit&quot;);</span>
+
+<span class="fc" id="L39">        String option = scanner.nextLine();</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">        while(!option.equals(&quot;2&quot;)) {</span>
+<span class="fc" id="L41">            System.out.print(&quot;\nRoom number (format: f.n f-floor, n-number): &quot;);</span>
+<span class="fc" id="L42">            String roomNumber = scanner.nextLine();</span>
+<span class="fc" id="L43">            System.out.print(&quot;\nPrice number: &quot;);</span>
+<span class="fc" id="L44">            int price = scanner.nextInt();</span>
+<span class="fc" id="L45">            System.out.print(&quot;\nRoom capacity: &quot;);</span>
+<span class="fc" id="L46">            int capacity = scanner.nextInt();</span>
+<span class="fc" id="L47">            Room room = new Room(roomNumber, capacity, price);</span>
+<span class="fc" id="L48">            rooms.put(roomNumber,room);</span>
+<span class="fc" id="L49">            System.out.println(&quot;Room &quot;+room.getId()+&quot; created\n\n&quot;);</span>
+<span class="fc" id="L50">            System.out.println(&quot;1. Create a new room&quot;);</span>
+<span class="fc" id="L51">            System.out.println(&quot;2. Exit&quot;);</span>
+<span class="fc" id="L52">            scanner.nextLine();</span>
+<span class="fc" id="L53">            option = scanner.nextLine();</span>
+<span class="fc" id="L54">        }</span>
+<span class="fc" id="L55">    }</span>
+
+    /**
+     * Konstruktor wczytujacy dane hotelu z pliku (wraz z klientami)
+     *
+     * @param file Nazwa hotelu
+     * @throws IOException Wyjatek w razie niepowodzenia operacji zapisu/odczytu z pliku
+     */
+<span class="fc" id="L63">    public Hotel(String file) throws IOException {</span>
+<span class="fc" id="L64">        rooms = new MyHashMap&lt;&gt;();</span>
+<span class="fc" id="L65">        clients = new MyHashMap&lt;&gt;();</span>
+<span class="fc" id="L66">        this.hotelName = file;</span>
+<span class="fc" id="L67">        String file1 = file + &quot;Rooms.csv&quot;;</span>
+<span class="fc" id="L68">        String file2 = file + &quot;Persons.csv&quot;;</span>
+
+        try(
+<span class="fc" id="L71">                Reader reader = new FileReader(file1);</span>
+<span class="fc" id="L72">                CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim())) {</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">            for (CSVRecord csvRecord : csvParser) {</span>
+<span class="fc" id="L74">                String id = csvRecord.get(0);</span>
+<span class="fc" id="L75">                int capacity = Integer.parseInt(csvRecord.get(1));</span>
+<span class="fc" id="L76">                int price = Integer.parseInt(csvRecord.get(2));</span>
+<span class="fc" id="L77">                Room room = new Room(id, capacity, price);</span>
+<span class="fc" id="L78">                room.setOccupied(false);</span>
+
+<span class="pc bpc" id="L80" title="1 of 4 branches missed.">                if (csvRecord.size() &gt; 3 &amp;&amp; !csvRecord.get(3).isEmpty()) {</span>
+<span class="fc" id="L81">                    String reservationDateBuf = csvRecord.get(3);</span>
+<span class="fc" id="L82">                    LocalDate reservationDate = LocalDate.parse(reservationDateBuf);</span>
+<span class="fc" id="L83">                    int duration = Integer.parseInt(csvRecord.get(4));</span>
+<span class="fc" id="L84">                    room.reserveRoom(reservationDate, duration);</span>
+<span class="fc" id="L85">                    room.setOccupied(true);</span>
+                }
+
+<span class="pc bpc" id="L88" title="1 of 4 branches missed.">                if (csvRecord.size() &gt; 5 &amp;&amp; !csvRecord.get(5).isEmpty()) {</span>
+<span class="nc" id="L89">                    String info = csvRecord.get(5);</span>
+<span class="nc" id="L90">                    room.setInfo(info);</span>
+                }
+<span class="pc bpc" id="L92" title="1 of 2 branches missed.">                if (!rooms.put(id, room)) {</span>
+<span class="nc" id="L93">                    System.out.println(&quot;Can't create room &quot; + id);</span>
+                }
+<span class="fc" id="L95">            }</span>
+
+        }
+<span class="fc" id="L98">        catch(Exception e) {</span>
+<span class="fc" id="L99">            System.out.println(&quot;Error with reading rooms!&quot;);</span>
+<span class="fc" id="L100">            e.printStackTrace();</span>
+<span class="fc" id="L101">            throw e;</span>
+<span class="fc" id="L102">        }</span>
+
+        try(
+<span class="fc" id="L105">                Reader reader = new FileReader(file2);</span>
+<span class="fc" id="L106">                CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim())) {</span>
+
+<span class="fc bfc" id="L108" title="All 2 branches covered.">            for (CSVRecord csvRecord : csvParser) {</span>
+<span class="fc" id="L109">                String id = csvRecord.get(0);</span>
+<span class="fc" id="L110">                String name = csvRecord.get(1);</span>
+<span class="fc" id="L111">                String surname = csvRecord.get(2);</span>
+<span class="fc" id="L112">                String phone = csvRecord.get(3);</span>
+<span class="fc" id="L113">                String mail = csvRecord.get(4);</span>
+<span class="fc" id="L114">                String roomNumber = csvRecord.get(5);</span>
+<span class="fc" id="L115">                Person person = new Person(id, name, surname, phone, mail);</span>
+<span class="fc" id="L116">                Room room = rooms.get(roomNumber);</span>
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">                if (room == null) {</span>
+<span class="nc" id="L118">                    throw new IOException(&quot;Room with number &quot; + roomNumber + &quot; not found&quot;);</span>
+                }
+<span class="fc" id="L120">                room.addOccupant(person);</span>
+
+<span class="fc" id="L122">                room.setOccupied(true);</span>
+
+<span class="fc" id="L124">                clients.put(person, room);</span>
+<span class="fc" id="L125">            }</span>
+
+        }
+<span class="nc" id="L128">        catch(Exception e) {</span>
+<span class="nc" id="L129">            System.out.println(&quot;Error with reading persons!&quot;);</span>
+<span class="nc" id="L130">            throw e;</span>
+<span class="fc" id="L131">        }</span>
+<span class="fc" id="L132">    }</span>
+
+    /**
+     *
+     * @param name Nazwa pod jaka chcemy zapisac hotel
+     * @throws IOException Wyjatek w razie niepowodzenia operacji zapisu/odczytu z pliku
+     */
+    void saveHotel(String name) throws IOException {
+<span class="fc" id="L140">        String file1 = name + &quot;Rooms.csv&quot;;</span>
+<span class="fc" id="L141">        String file2 = name + &quot;Persons.csv&quot;;</span>
+
+        try(
+<span class="fc" id="L144">        Writer out = new FileWriter(file1);</span>
+<span class="fc" id="L145">        CSVPrinter csvPrinter = new CSVPrinter(out, CSVFormat.DEFAULT.withHeader(&quot;id&quot;,&quot;Capacity&quot;,&quot;Price&quot;,&quot;reservationDate&quot;,&quot;durationDays&quot;,&quot;info&quot;));</span>
+        ) {
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">            if (rooms != null) {</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">                for (String key : rooms.keys()) {</span>
+<span class="fc" id="L149">                    Room room = rooms.get(key);</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">                    if (room.isOccupied()) {</span>
+<span class="fc" id="L151">                        csvPrinter.printRecord(room.getId(), Integer.toString(room.getCapacity()), Integer.toString(room.getPrice()), room.getReservationDate().toString(), Integer.toString(room.getDurationDays()), room.getInfo());</span>
+                    } else {
+<span class="fc" id="L153">                        csvPrinter.printRecord(room.getId(), Integer.toString(room.getCapacity()), Integer.toString(room.getPrice()));</span>
+                    }
+
+<span class="fc" id="L156">                }</span>
+            }
+        }
+<span class="nc" id="L159">        catch(Exception e) {</span>
+<span class="nc" id="L160">            e.printStackTrace();</span>
+<span class="nc" id="L161">            System.out.println(&quot;Error with saving rooms!&quot;);</span>
+<span class="nc" id="L162">            System.exit(1);</span>
+<span class="fc" id="L163">        }</span>
+
+        try(
+<span class="fc" id="L166">        Writer out2 = new FileWriter(file2);</span>
+<span class="fc" id="L167">        CSVPrinter csvPrinter2 = new CSVPrinter(out2, CSVFormat.DEFAULT.withHeader(&quot;id&quot;,&quot;Name&quot;,&quot;Surname&quot;,&quot;PhoneNumber&quot;,&quot;Mail&quot;,&quot;Room&quot;));</span>
+        ) {
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">            if (clients != null) {</span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">                for (Person person : clients.keys()) {</span>
+<span class="fc" id="L171">                    csvPrinter2.printRecord(person.id(), person.name(), person.surname(), person.phoneNumber(), person.mail(), clients.get(person).getId());</span>
+<span class="fc" id="L172">                }</span>
+            }
+        }
+<span class="nc" id="L175">        catch(Exception e) {</span>
+<span class="nc" id="L176">            System.out.println(&quot;Error with saving persons! (&quot;+e.getMessage()+&quot;)&quot;);</span>
+<span class="nc" id="L177">            System.exit(1);</span>
+<span class="fc" id="L178">        }</span>
+
+<span class="fc" id="L180">    }</span>
+
+    /**
+     * Metoda zapisujaca hotel w przypadku nie pdoania nazwy (wtedy hotel jest nadpisywany)
+     * @throws IOException Wyjatek w razie niepowodzenia operacji zapisu/odczytu z pliku
+     */
+    public void saveHotel() throws IOException {
+<span class="nc" id="L187">        saveHotel(this.hotelName);</span>
+<span class="nc" id="L188">    }</span>
+
+    /**
+     *
+     * @return Lista numerow pokojow
+     */
+    public List&lt;String&gt; getRooms(){
+<span class="fc" id="L195">        return rooms.keys();</span>
+    }
+
+    /**
+     *
+     * @return Lista klientow bedacych w hotelu
+     */
+    public List&lt;Person&gt; getClients(){
+<span class="fc bfc" id="L203" title="All 2 branches covered.">        if(clients == null) return Collections.emptyList();</span>
+<span class="fc" id="L204">        return clients.keys();</span>
+    }
+
+    /**
+     *
+     * @param roomNumber Numer pokoju
+     * @return Obiekt pokoju
+     */
+    public Room getRoom(String roomNumber){
+<span class="fc" id="L213">        return rooms.get(roomNumber);</span>
+    }
+
+    /**
+     *
+     * @param person Klient hotelu
+     * @param room Pokoj pod ktory osoba jest zarezerwowana
+     */
+    public void addClient(Person person, Room room){
+<span class="pc bpc" id="L222" title="1 of 2 branches missed.">        if(clients == null) {</span>
+<span class="nc" id="L223">            clients = new MyHashMap&lt;&gt;();</span>
+        }
+
+<span class="pc bpc" id="L226" title="1 of 2 branches missed.">        if(clients.keys().contains(person)){</span>
+<span class="nc" id="L227">            Room prevRoom = clients.get(person);</span>
+<span class="nc" id="L228">            prevRoom.getOccupants().remove(person);</span>
+<span class="nc bnc" id="L229" title="All 2 branches missed.">            if(prevRoom.getOccupants().isEmpty()) {</span>
+<span class="nc" id="L230">                prevRoom.setOccupied(false);</span>
+<span class="nc" id="L231">                prevRoom.setInfo(null);</span>
+            }
+<span class="nc" id="L233">            clients.put(person, room);</span>
+<span class="nc" id="L234">        }</span>
+        else{
+<span class="fc" id="L236">            clients.put(person,room);</span>
+        }
+<span class="fc" id="L238">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

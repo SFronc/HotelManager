@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Room.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Modul glowny aplikacji - klasa Main z metoda main</a> &gt; <a href="index.source.html" class="el_package">pl.edu.agh.kis.pz1</a> &gt; <span class="el_source">Room.java</span></div><h1>Room.java</h1><pre class="source lang-java linenums">package pl.edu.agh.kis.pz1;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+/**
+ * Klasa reprezentująca pokój hotelu
+ * Składa się z takich danych jak id (numer w formacie f.n gdzie f - piętro, n - numer pokoju), ceny, pojemności, dodatkowej informacji, daty rezerwacji i jej długości
+ * Klasa zawiera również listę lokatorów
+ */
+public class Room {
+    private String id;
+    private int price;
+    private final int capacity;
+    private String info;
+    private LocalDate reservationDate;
+    private int durationDays;
+
+
+    private List&lt;Person&gt; occupants;
+<span class="fc" id="L23">    private boolean occupied = false;</span>
+
+    /**
+     *
+     * @param number Numer pokoju (w formacie f.n gdzie f - piętro, n - numer pokoju)
+     * @param capacity Pojemność
+     * @param price Cena pokoju
+     */
+<span class="fc" id="L31">    public Room(String number, int capacity, int price) {</span>
+<span class="fc" id="L32">        this.id = number;</span>
+<span class="fc" id="L33">        this.capacity = capacity;</span>
+<span class="fc" id="L34">        this.price = price;</span>
+<span class="fc" id="L35">        this.occupants = null;</span>
+<span class="fc" id="L36">        info = &quot;&quot;;</span>
+<span class="fc" id="L37">    }</span>
+
+    /**
+     * @return Numer piętra w formacie int
+     */
+    public int getFloor() {
+<span class="nc" id="L43">        return Integer.parseInt(this.id.substring(0, this.id.indexOf('.')));</span>
+    }
+
+    /**
+     * @return Numer pokoju w formacie int
+     */
+    public int getNumber() {
+<span class="nc" id="L50">        return Integer.parseInt(this.id.substring(this.id.indexOf('.') + 1));</span>
+    }
+
+    /**
+     * Getter
+     * @return Cena
+     */
+    public int getPrice() {
+<span class="fc" id="L58">        return price;</span>
+    }
+
+    /**
+     * Metoda ustawia nową cenę pokoju
+     * @param price Nowa cena
+     */
+    public void setPrice(int price) {
+<span class="nc" id="L66">        this.price = price;</span>
+<span class="nc" id="L67">    }</span>
+
+    /**
+     * Getter
+     * @return Pojemność pokoju
+     */
+    public int getCapacity() {
+<span class="fc" id="L74">        return capacity;</span>
+    }
+
+    /**
+     * Getter
+     * @return Lista lokatorów
+     */
+    public List&lt;Person&gt; getOccupants() {
+<span class="fc" id="L82">        return occupants;</span>
+    }
+
+    /**
+     * Setter dodający listę nowych lokatorów do pokoju
+     * @param occupants Lista nowych lokatorów
+     * @return Powodzenie operacji
+     */
+    public boolean setOccupants(List&lt;Person&gt; occupants) {
+<span class="nc bnc" id="L91" title="All 2 branches missed.">        if(occupants.size() &gt; (this.capacity - 1)) return false;</span>
+<span class="nc" id="L92">        this.occupants = occupants;</span>
+<span class="nc" id="L93">        return true;</span>
+    }
+
+    /**
+     * Metoda sprawdzająca zajętość pokoju
+     * @return True/False
+     */
+    public boolean isOccupied() {
+<span class="fc" id="L101">        return occupied;</span>
+    }
+
+    /**
+     * Metoda ustawiająca zajętość pokoju
+     * @param occupied Wartość (True - zajęty, False - wolny)
+     */
+    public void setOccupied(boolean occupied) {
+<span class="fc" id="L109">        this.occupied = occupied;</span>
+<span class="fc" id="L110">    }</span>
+
+    /**
+     * Dodaje jedną osobę do pokoju
+     * @param person Nowa osoba
+     * @return Powodzenei operacji
+     */
+    public boolean addOccupant(Person person) {
+<span class="fc bfc" id="L118" title="All 2 branches covered.">        if(this.occupants == null) this.occupants = new ArrayList&lt;&gt;();</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">        if(this.occupants.size() &gt;= (this.capacity)) return false;</span>
+<span class="fc" id="L120">        this.occupants.add(person);</span>
+<span class="fc" id="L121">        this.setOccupied(true);</span>
+<span class="fc" id="L122">        return true;</span>
+    }
+
+    /**
+     * Usunięcie lokatora. Jeśli usunięta zostanie pierwsza osoba, pokój staje się zarejestrowany na kolejną osobę na liście
+     * @param person Osoba do usinięcia
+     * @return Powodzenie operacji
+     */
+    public boolean removeOccupant(Person person) {
+<span class="nc bnc" id="L131" title="All 2 branches missed.">        if(this.occupants.contains(person)) return false;</span>
+<span class="nc" id="L132">        this.occupants.remove(person);</span>
+<span class="nc" id="L133">        return true;</span>
+    }
+
+    /**
+     * @return Hash
+     */
+    public int hashCode(){
+<span class="nc" id="L140">        return Objects.hash(id);</span>
+    }
+
+    /**
+     * Metoda sprawdza czy pokoje sątakie same (czy majątaki sam numer)
+     * @param obj Pokój do porównania
+     * @return True jeśli mają taki sam numer, ianczej False
+     */
+    public boolean equals(Object obj){
+<span class="nc bnc" id="L149" title="All 2 branches missed.">        if(this == obj) return true;</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">        if(obj instanceof Room){</span>
+<span class="nc" id="L151">            Room room = (Room)obj;</span>
+<span class="nc" id="L152">            return id.equals(room.id);</span>
+        }
+<span class="nc" id="L154">        return false;</span>
+    }
+
+    /**
+     * Metoda rezerwująca pokój
+     * @param reservationDate Data rezerwacji
+     * @param durationDays Długość pobytu
+     */
+    public void reserveRoom(LocalDate reservationDate, int durationDays) {
+<span class="fc" id="L163">        this.reservationDate = reservationDate;</span>
+<span class="fc" id="L164">        this.durationDays = durationDays;</span>
+<span class="fc" id="L165">    }</span>
+
+    /**
+     * Zwaraca datę rezerwacji
+     * @return Data rezerwacji
+     */
+    public LocalDate getReservationDate() {
+<span class="fc" id="L172">        return reservationDate;</span>
+    }
+
+    /**
+     * Getter
+     * @return Ilość dni na które zarezerwowany jest pokój
+     */
+    public int getDurationDays() {
+<span class="fc" id="L180">        return durationDays;</span>
+    }
+
+    /**
+     * Getter
+     * @return Dodatkowe informacje
+     */
+    public String getInfo() {
+<span class="fc" id="L188">        return info;</span>
+    }
+
+    /**
+     * Setter
+     * @param info Nowa informacja
+     */
+    public void setInfo(String info) {
+<span class="fc" id="L196">        this.info = info;</span>
+<span class="fc" id="L197">    }</span>
+
+    /**
+     * Getter
+     * @return id (numer) pokoju
+     */
+    public String getId() {
+<span class="fc" id="L204">        return id;</span>
+    }
+
+    /**
+     * Metoda ustawiająca datę rezerwacji i długość
+     * @param checkInDate Data wpisu
+     * @param durationDays Planowana długosć pobytu
+     */
+    public void setCheckInDate(LocalDate checkInDate, int durationDays) {
+<span class="fc" id="L213">        this.reservationDate = checkInDate;</span>
+<span class="fc" id="L214">        this.durationDays = durationDays;</span>
+<span class="fc" id="L215">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

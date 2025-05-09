@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Person.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Modul glowny aplikacji - klasa Main z metoda main</a> &gt; <a href="index.source.html" class="el_package">pl.edu.agh.kis.pz1</a> &gt; <span class="el_source">Person.java</span></div><h1>Person.java</h1><pre class="source lang-java linenums">package pl.edu.agh.kis.pz1;
+
+
+import java.time.LocalDateTime;
+import java.util.Scanner;
+
+
+/**
+ * Klasa reprezentująca osobę
+ * Osoba definiowana jest przez wartości takie jak id, name, surname, phoneNumber, mail
+ *
+ * @author Seweryn Fronc
+ * @version 1.0
+ */
+public class Person {
+    private final String id; //PESEL
+    private final String name;
+    private final String surname;
+    private String phoneNumber;
+    private String mail;
+
+    /**
+     * Statyczna interaktywna metoda do utworzenia nowej osoby
+     * Metoda zapewnia podstawową poprawność danych takich jak numer telefonu, poprawny PESEL i mail
+     * W przypadku braku podania id, generuje się domyśny identyfikator
+     * W razie niepdoania liczby kierunkowej numeru, domyślnie wstawia się +48
+     * @return obiekt klasy Person (konkretna osoba)
+     */
+    public static Person createPerson(Scanner sc2) {
+<span class="fc" id="L30">        System.out.println(&quot;Creating Person...&quot;);</span>
+        //Scanner sc2 = new Scanner(System.in);
+        String data;
+        String id;
+        String name;
+        String surname;
+        String phoneNumber;
+        String mail;
+<span class="fc" id="L38">        System.out.print(&quot;PESEL (skip if PESEL not definied): &quot;);</span>
+<span class="fc" id="L39">        data = sc2.nextLine();</span>
+<span class="pc bpc" id="L40" title="5 of 6 branches missed.">        while (data.length() != 11 &amp;&amp; !data.isEmpty() &amp;&amp; !data.matches(&quot;\\d{11}&quot;)) {</span>
+<span class="nc" id="L41">            System.out.print(&quot;\nWrong number, please try again: &quot;);</span>
+<span class="nc" id="L42">            data = sc2.nextLine();</span>
+        }
+
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">        if(data.isEmpty()) {</span>
+<span class="nc" id="L46">            LocalDateTime now = LocalDateTime.now();</span>
+<span class="nc" id="L47">            id = &quot;D&quot;+String.format(&quot;%04d%02d%02d%02d%02d%02d&quot;,now.getYear(), now.getMonthValue(), now.getDayOfMonth(), now.getHour(), now.getMinute(), now.getSecond()); //D means &quot;default&quot;</span>
+<span class="nc" id="L48">        }</span>
+        else {
+<span class="fc" id="L50">            id = data;</span>
+        }
+
+<span class="fc" id="L53">        System.out.print(&quot;NAME: &quot;);</span>
+<span class="fc" id="L54">        name = sc2.nextLine();</span>
+
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">        while (name.isEmpty()){</span>
+<span class="nc" id="L57">            System.out.print(&quot;\nWrong name, please try again: &quot;);</span>
+<span class="nc" id="L58">            name = sc2.nextLine();</span>
+        }
+
+<span class="fc" id="L61">        System.out.print(&quot;SURNAME: &quot;);</span>
+
+<span class="fc" id="L63">        surname = sc2.nextLine();</span>
+
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">        while (surname.isEmpty()){</span>
+<span class="nc" id="L66">            System.out.print(&quot;\nWrong surname, please try again: &quot;);</span>
+<span class="nc" id="L67">            surname = sc2.nextLine();</span>
+        }
+
+
+<span class="fc" id="L71">        System.out.print(&quot;PHONE NUMBER: &quot;);</span>
+<span class="fc" id="L72">        phoneNumber = &quot;&quot;;</span>
+
+<span class="pc bpc" id="L74" title="7 of 8 branches missed.">        while((data = sc2.nextLine()).length() != 9 &amp;&amp; !data.isEmpty() &amp;&amp; data.length() != 12 &amp;&amp; !data.matches(&quot;\\d{9}&quot;)){</span>
+<span class="nc" id="L75">            System.out.print(&quot;\nWrong number, please try again: &quot;);</span>
+        }
+
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">        if(!data.isEmpty()) {</span>
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">            if (data.charAt(0) == '+') {</span>
+<span class="nc" id="L80">                phoneNumber = data;</span>
+            } else {
+<span class="fc" id="L82">                phoneNumber = &quot;+48&quot; + data;</span>
+            }
+        }
+
+<span class="fc" id="L86">        System.out.print(&quot;MAIL: &quot;);</span>
+<span class="pc bpc" id="L87" title="1 of 2 branches missed.">        while(!((data = sc2.nextLine()).contains(&quot;@&quot;))) {</span>
+<span class="nc" id="L88">            System.out.print(&quot;\nWrong email, please try again: &quot;);</span>
+        }
+<span class="fc" id="L90">        mail = data;</span>
+
+<span class="fc" id="L92">        return new Person(id, name, surname, phoneNumber, mail);</span>
+
+    }
+
+    /**
+     * Konstruktor tworzący osobę w sposób nieinteraktywny
+     * @param id Identyfiaktor osoby (PESEL)
+     * @param name Imie osoby
+     * @param surname Nazwisko osoby
+     * @param phoneNumber Numer telefonu
+     * @param mail Mail kontaktowy osoby
+     */
+<span class="fc" id="L104">    public Person(String id, String name, String surname, String phoneNumber, String mail) {</span>
+<span class="fc" id="L105">        this.id = id;</span>
+<span class="fc" id="L106">        this.name = name;</span>
+<span class="fc" id="L107">        this.surname = surname;</span>
+<span class="fc" id="L108">        this.phoneNumber = phoneNumber;</span>
+<span class="fc" id="L109">        this.mail = mail;</span>
+<span class="fc" id="L110">    }</span>
+
+    /**
+     * Getter identyfikatora osoby (PESEL)
+     * @return Id osoby (PESEL)
+     */
+    public String id() {
+<span class="fc" id="L117">        return id;</span>
+    }
+
+    /**
+     * Getter imienia osoby
+     * @return Imie osoby
+     */
+    public String name() {
+<span class="fc" id="L125">        return name;</span>
+    }
+
+    /**
+     * Getter
+     * @return Nazwisko osoby
+     */
+    public String surname() {
+<span class="fc" id="L133">        return surname;</span>
+    }
+
+    /**
+     * Getter
+     * @return Numer tel. osoby
+     */
+    public String phoneNumber() {
+<span class="fc" id="L141">        return phoneNumber;</span>
+    }
+
+    /**
+     * Getter
+     * @return Mail
+     */
+    public String mail() {
+<span class="fc" id="L149">        return mail;</span>
+    }
+
+    /**
+     * Metoda zmieniajaca numer tel osoby
+     * @param phoneNumber Nowy numer tel.
+     */
+    public void changePhoneNumber(String phoneNumber) {
+<span class="fc" id="L157">        this.phoneNumber = phoneNumber;</span>
+<span class="fc" id="L158">    }</span>
+
+    /**
+     * Metoda zwracajaca Hashcode osoby
+     * @return Hash code
+     */
+    public int hashCode(){
+<span class="fc" id="L165">        return id.hashCode();</span>
+    }
+
+    /**
+     * Metoda porownujaca dwie osoby
+     * @param obj Obiekt do porownania
+     * @return True jesli osoby sa rowne (take same ID), False w przeciwnym wypadku
+     */
+    public boolean equals(Object obj){
+<span class="fc bfc" id="L174" title="All 2 branches covered.">        if(this == obj) return true;</span>
+<span class="pc bpc" id="L175" title="1 of 2 branches missed.">        if(obj instanceof Person){</span>
+<span class="fc" id="L176">            Person person = (Person)obj;</span>
+<span class="fc" id="L177">            return id.equals(person.id());</span>
+        }
+<span class="nc" id="L179">        return false;</span>
+    }
+
+    /**
+     * Metoda zwaracajace sformatowane dane osoby
+     * @return Ciag znakow opisujacych osobe
+     */
+    @Override
+    public String toString(){
+<span class="fc" id="L188">        return name + &quot; &quot; + surname + &quot;\n&quot; + &quot;Id: &quot; + id + &quot;\nPhone Number: &quot; + phoneNumber + &quot;\nMail: &quot; + mail + &quot;\n&quot;;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

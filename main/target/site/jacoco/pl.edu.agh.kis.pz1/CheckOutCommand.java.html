@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CheckOutCommand.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Modul glowny aplikacji - klasa Main z metoda main</a> &gt; <a href="index.source.html" class="el_package">pl.edu.agh.kis.pz1</a> &gt; <span class="el_source">CheckOutCommand.java</span></div><h1>CheckOutCommand.java</h1><pre class="source lang-java linenums">package pl.edu.agh.kis.pz1;
+
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Scanner;
+
+/**
+ * Komenda sluzaca do wypisania osoby z hotelu
+ *
+ * @author Seweryn Fronc
+ * @version 1.0
+ */
+public class CheckOutCommand extends Command&lt;Hotel&gt; {
+    public CheckOutCommand() {
+<span class="fc" id="L16">        super(&quot;checkout&quot;);</span>
+<span class="fc" id="L17">    }</span>
+
+    /**
+     * Interaktywna metoda wypisujaca osobe z pokoju.
+     * Metoda wypisuje koszt pobytu oraz dane osoby na ktora wypisano rachunek zaplaty
+     * @return True w przypadku powodzenia, False w przeciwnym wypadku
+     */
+    @Override
+    public boolean execute(Hotel target) {
+<span class="fc" id="L26">        System.out.print(&quot;Type room number (format: f.n where f - floor, n - room number): &quot;);</span>
+<span class="fc" id="L27">        Scanner scanner = new Scanner(System.in);</span>
+<span class="fc" id="L28">        String roomNumber = scanner.nextLine();</span>
+
+<span class="pc bpc" id="L30" title="1 of 2 branches missed.">        if(!target.getRooms().contains(roomNumber)){</span>
+<span class="nc" id="L31">            System.out.println(&quot;Room not found!&quot;);</span>
+<span class="nc" id="L32">            return false;</span>
+        }
+
+<span class="fc" id="L35">        Room room = target.getRoom(roomNumber);</span>
+
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">        if(!room.isOccupied()){</span>
+<span class="nc" id="L38">            System.out.println(&quot;Room is empty!&quot;);</span>
+<span class="nc" id="L39">            return false;</span>
+        }
+
+<span class="fc" id="L42">        room.setOccupied(false);</span>
+<span class="fc" id="L43">        List&lt;Person&gt; occupants = room.getOccupants();</span>
+<span class="fc" id="L44">        List&lt;Person&gt; clients = target.getClients();</span>
+<span class="fc" id="L45">        long daysBetween = ChronoUnit.DAYS.between(room.getReservationDate(), LocalDate.now());</span>
+<span class="fc" id="L46">        System.out.println(&quot;Cost of room stay: &quot; + ((daysBetween + 1)*room.getPrice()));</span>
+<span class="fc" id="L47">        System.out.print(&quot;The bill issued to: &quot;);</span>
+<span class="fc" id="L48">        System.out.println(room.getOccupants().get(0));</span>
+<span class="fc" id="L49">        clients.removeAll(occupants);</span>
+<span class="fc" id="L50">        occupants.clear();</span>
+
+<span class="fc" id="L52">        return true;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

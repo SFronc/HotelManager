@@ -1,0 +1,51 @@
+@options
+@packages
+-classpath
+'C:/Users/User/.m2/repository/pl/edu/agh/kis/pz1/utils/1.0/utils-1.0.jar;C:/Users/User/.m2/repository/commons-codec/commons-codec/1.15/commons-codec-1.15.jar;C:/Users/User/.m2/repository/commons-io/commons-io/2.11.0/commons-io-2.11.0.jar;C:/Users/User/.m2/repository/org/apache/commons/commons-lang3/3.12.0/commons-lang3-3.12.0.jar;C:/Users/User/.m2/repository/org/apache/commons/commons-csv/1.9.0/commons-csv-1.9.0.jar'
+-encoding
+'UTF-8'
+-protected
+-source
+'1.7'
+-sourcepath
+'C:/Users/User/Documents/PZ1/LAB3/multi-module/Hotel_Manager/main/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2024. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'C:/Users/User/Documents/PZ1/LAB3/multi-module/Hotel_Manager/main/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'Modul glowny aplikacji - klasa Main z metoda main 1.0 API'
+-linkoffline
+'https://docs.oracle.com/javase/7/docs/api' 'C:/Users/User/Documents/PZ1/LAB3/multi-module/Hotel_Manager/main/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'Modul glowny aplikacji - klasa Main z metoda main 1.0 API'
+pl.edu.agh.kis.pz1
+C:\Users\User\.m2\repository\pl\edu\agh\kis\pz1\utils\1.0\utils-1.0.jar = 1732669038544
+C:\Users\User\.m2\repository\commons-codec\commons-codec\1.15\commons-codec-1.15.jar = 1730409670889
+C:\Users\User\.m2\repository\commons-io\commons-io\2.11.0\commons-io-2.11.0.jar = 1728948785962
+C:\Users\User\.m2\repository\org\apache\commons\commons-lang3\3.12.0\commons-lang3-3.12.0.jar = 1728948786033
+C:\Users\User\.m2\repository\org\apache\commons\commons-csv\1.9.0\commons-csv-1.9.0.jar = 1730409670893
+C:\Users\User\Documents\PZ1\LAB3\multi-module\Hotel_Manager\main\src\main\java = 1730327542031
+C:\Users\User\Documents\PZ1\LAB3\multi-module\Hotel_Manager\main\target\site\apidocs\allclasses-index.html = 1732669058621
+C:\Users\User\Documents\PZ1\LAB3\multi-module\Hotel_Manager\main\target\site\apidocs\allpackages-index.html = 1732669058623
+C:\Users\User\Documents\PZ1\LAB3\multi-module\Hotel_Manager\main\target\site\apidocs\element-list = 1732669058557
+C:\Users\User\Documents\PZ1\LAB3\multi-module\Hotel_Manager\main\target\site\apidocs\help-doc.html = 1732669058643
+C:\Users\User\Documents\PZ1\LAB3\multi-module\Hotel_Manager\main\target\site\apidocs\index-all.html = 1732669058638
+C:\Users\User\Documents\PZ1\LAB3\multi-module\Hotel_Manager\main\target\site\apidocs\index.html = 1732669058640
+C:\Users\User\Documents\PZ1\LAB3\multi-module\Hotel_Manager\main\target\site\apidocs\jquery-ui.overrides.css = 1732669058651
+C:\Users\User\Documents\PZ1\LAB3\multi-module\Hotel_Manager\main\target\site\apidocs\member-search-index.js = 1732669058627
+C:\Users\User\Documents\PZ1\LAB3\multi-module\Hotel_Manager\main\target\site\apidocs\module-search-index.js = 1732669058624
+C:\Users\User\Documents\PZ1\LAB3\multi-module\Hotel_Manager\main\target\site\apidocs\overview-tree.html = 1732669058609
+C:\Users\User\Documents\PZ1\LAB3\multi-module\Hotel_Manager\main\target\site\apidocs\package-search-index.js = 1732669058625
+C:\Users\User\Documents\PZ1\LAB3\multi-module\Hotel_Manager\main\target\site\apidocs\script.js = 1732669058645
+C:\Users\User\Documents\PZ1\LAB3\multi-module\Hotel_Manager\main\target\site\apidocs\search.js = 1732669058646
+C:\Users\User\Documents\PZ1\LAB3\multi-module\Hotel_Manager\main\target\site\apidocs\stylesheet.css = 1732669058644
+C:\Users\User\Documents\PZ1\LAB3\multi-module\Hotel_Manager\main\target\site\apidocs\tag-search-index.js = 1732669058627
+C:\Users\User\Documents\PZ1\LAB3\multi-module\Hotel_Manager\main\target\site\apidocs\type-search-index.js = 1732669058626
